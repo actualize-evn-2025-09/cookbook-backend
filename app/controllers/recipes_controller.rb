@@ -1,5 +1,14 @@
 class RecipesController < ApplicationController
+  # callback
+
+  # run the authenticate_user for every action exctpe the index action
+  before_action :authenticate_user, except: [:index]
+
+  # run the authenticate_user before only the show action
+  # before_action :authenticate_user, only: [:show]
+
   def index
+    pp current_user
     recipes = Recipe.all.order(:id)
     render json: recipes
   end
