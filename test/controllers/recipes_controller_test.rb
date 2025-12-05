@@ -10,19 +10,27 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "show" do
+    post "/users.json", params: { name: "Test", email: "test@test.com", password: "password", password_confirmation: "password" }
+    post "/sessions.json", params: { email: "test@test.com", password: "password" }
+
     get "/recipes/#{Recipe.first.id}.json"
     assert_response 200
   end
 
   test "create" do
     assert_difference "Recipe.count", 1 do
-      post "/recipes.json", params: { title: "Test Dish", chef: "Test Chef", image_url: "test.jpg" }
-      data = JSON.parse(response.body)
+      post "/users.json", params: { name: "Test", email: "test@test.com", password: "password", password_confirmation: "password" }
+      post "/sessions.json", params: { email: "test@test.com", password: "password" }
+
+      post "/recipes.json", params: { title: "Cake", chef: "Jay", image_url: "test.jpg", prep_time: 10, ingredients: "Batter", directions: "Bake" }
       assert_response 200
     end
   end
 
   test "update" do
+    post "/users.json", params: { name: "Test", email: "test@test.com", password: "password", password_confirmation: "password" }
+    post "/sessions.json", params: { email: "test@test.com", password: "password" }
+
     recipe = Recipe.first
     patch "/recipes/#{recipe.id}.json", params: { title: "Updated Dish" }
     assert_response 200
@@ -33,6 +41,9 @@ class RecipesControllerTest < ActionDispatch::IntegrationTest
 
   test "destroy" do
     assert_difference "Recipe.count", -1 do
+      post "/users.json", params: { name: "Test", email: "test@test.com", password: "password", password_confirmation: "password" }
+      post "/sessions.json", params: { email: "test@test.com", password: "password" }
+
       delete "/recipes/#{Recipe.first.id}.json"
       assert_response 200
     end

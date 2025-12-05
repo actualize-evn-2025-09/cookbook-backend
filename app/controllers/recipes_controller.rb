@@ -8,7 +8,6 @@ class RecipesController < ApplicationController
   # before_action :authenticate_user, only: [:show]
 
   def index
-    pp current_user
     recipes = Recipe.all.order(:id)
     render json: recipes
   end
@@ -18,6 +17,7 @@ class RecipesController < ApplicationController
       title: params[:title],
       chef: params[:chef],
       image_url: params[:image_url],
+      user_id: current_user.id
     )
     if recipe.save
       render json: recipe
