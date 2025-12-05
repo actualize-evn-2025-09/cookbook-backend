@@ -2,7 +2,13 @@ class RecipesController < ApplicationController
   # callback
 
   # run the authenticate_user for every action exctpe the index action
-  before_action :authenticate_user, except: [:index]
+  before_action :authenticate_user, except: [:index, :show]
+  # authenticate user will run for create, update, and destroy
+  # authenticate admin will run for update and destroy
+  before_action :authenticate_admin, only: [:update, :destroy]
+  # anyone can see the data - index and show
+  # only logged in users can create data
+  # only admins can update or destroy
 
   # run the authenticate_user before only the show action
   # before_action :authenticate_user, only: [:show]
@@ -25,6 +31,9 @@ class RecipesController < ApplicationController
       render json: { errors: recipe.errors.full_messages }, status: :bad_request
     end
   end
+
+  # if this recipe is the user's recipe or they're an admin then they can edit 
+  # if this recipe is not their recipe and they're not an admin then they can't edit the recipe
 
   def show
     recipe = Recipe.find_by(id: params[:id])
