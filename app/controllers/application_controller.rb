@@ -25,4 +25,12 @@ class ApplicationController < ActionController::Base
       render json: { error: "Unauthorized - must be an admin" }, status: :unauthorized
     end
   end
+
+  def authorize_recipe_owner
+    recipe = Recipe.find(params[:id])
+
+    unless current_user.admin || recipe.user_id == current_user.id
+      render json: { error: "You don't have permission to modify this recipe" }, status: :unauthorized
+    end
+  end
 end

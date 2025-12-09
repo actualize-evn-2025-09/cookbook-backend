@@ -5,7 +5,7 @@ class RecipesController < ApplicationController
   before_action :authenticate_user, except: [:index, :show]
   # authenticate user will run for create, update, and destroy
   # authenticate admin will run for update and destroy
-  before_action :authenticate_admin, only: [:update, :destroy]
+  before_action :authorize_recipe_owner, only: [:update, :destroy]
   # anyone can see the data - index and show
   # only logged in users can create data
   # only admins can update or destroy
