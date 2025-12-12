@@ -14,21 +14,21 @@ class RecipesController < ApplicationController
   # before_action :authenticate_user, only: [:show]
 
   def index
-    recipes = Recipe.all.order(:id)
-    render json: recipes
+    @recipes = Recipe.all.order(:id)
+    render :index
   end
 
   def create
-    recipe = Recipe.new(
+    @recipe = Recipe.new(
       title: params[:title],
       chef: params[:chef],
       image_url: params[:image_url],
       user_id: current_user.id
     )
-    if recipe.save
-      render json: recipe
+    if @recipe.save
+      render :show
     else
-      render json: { errors: recipe.errors.full_messages }, status: :bad_request
+      render json: { errors: @recipe.errors.full_messages }, status: :bad_request
     end
   end
 
@@ -36,26 +36,26 @@ class RecipesController < ApplicationController
   # if this recipe is not their recipe and they're not an admin then they can't edit the recipe
 
   def show
-    recipe = Recipe.find_by(id: params[:id])
-    render json: recipe
+    @recipe = Recipe.find_by(id: params[:id])
+    render :show
   end
 
   def update
-    recipe = Recipe.find_by(id: params[:id])
-    recipe.title = params[:title] || recipe.title
-    recipe.chef = params[:chef] || recipe.chef
-    recipe.image_url = params[:image_url] || recipe.image_url
+    @recipe = Recipe.find_by(id: params[:id])
+    @recipe.title = params[:title] || @recipe.title
+    @recipe.chef = params[:chef] || @recipe.chef
+    @recipe.image_url = params[:image_url] || @recipe.image_url
 
-    if recipe.save
-      render json: recipe
+    if @recipe.save
+      render :show
     else
-      render json: { errors: recipe.errors.full_messages }, status: :bad_request
+      render json: { errors: @recipe.errors.full_messages }, status: :bad_request
     end
   end
 
   def destroy
-    recipe = Recipe.find_by(id: params[:id])
-    recipe.destroy
+    @recipe = Recipe.find_by(id: params[:id])
+    @recipe.destroy
     render json: { message: "Recipe successfully destroyed!" }
   end
 end
