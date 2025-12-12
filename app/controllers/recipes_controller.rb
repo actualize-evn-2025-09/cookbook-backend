@@ -15,6 +15,12 @@ class RecipesController < ApplicationController
 
   def index
     @recipes = Recipe.all.order(:id)
+
+    if params[:tag] && params[:tag] != ""
+      tag = Tag.find_by(name: params[:tag])
+      @recipes = tag.recipes
+    end
+
     render :index
   end
 
