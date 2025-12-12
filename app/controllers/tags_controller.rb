@@ -4,4 +4,9 @@ class TagsController < ApplicationController
 
     render json: tags
   end
+
+  def create
+    tag = Tag.create(name: params[:name])
+    render json: tag
+  end
 end

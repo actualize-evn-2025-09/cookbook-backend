@@ -31,7 +31,13 @@ class RecipesController < ApplicationController
       image_url: params[:image_url],
       user_id: current_user.id
     )
+
     if @recipe.save
+
+      if params[:tag_id] && params[:tag_id] != ""
+        RecipeTag.create(recipe_id: @recipe.id, tag_id: params[:tag_id])
+      end
+
       render :show
     else
       render json: { errors: @recipe.errors.full_messages }, status: :bad_request
