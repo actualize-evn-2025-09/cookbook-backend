@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
       cookie  = { value: user.id }
       # make sure that no one can tamper with the cookie and merge the cookie settings into the cookie object we created
       cookies.signed[:user_id] = cookie.merge(cookie_settings)
-      render json: { email: user.email, user_id: user.id }, status: :created
+      render json: { email: user.email, user_id: user.id, admin: user.admin || false }, status: :created
     else
       render json: {}, status: :unauthorized # 401
     end
