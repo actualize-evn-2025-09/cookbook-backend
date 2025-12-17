@@ -1,6 +1,6 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "localhost:5173"
+    origins "localhost:5173", "https://cookbook-frontend-actualize.netlify.app"
     resource "*",
       headers: :any,
       credentials: true,
